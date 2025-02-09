@@ -16,6 +16,7 @@ function TestApp() {
         <Route exact path="/" component={Home} />
         <Route exact path="/products" component={Products} />
         <Route exact path="/category/:categoryName" component={Category} />
+		
         <Route exact path="/offers" component={Offers} />
 		<Route exact path="/login" component={LoginForm} />
         <Route component={NotFound} />

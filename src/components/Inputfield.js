@@ -1,5 +1,8 @@
+
+
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Form, InputGroup, Button } from "react-bootstrap";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const InputField = ({
   label,
@@ -9,36 +12,49 @@ const InputField = ({
   onChange,
   isInvalid,
   feedback,
+  showPasswordToggle = false,
+  onPasswordToggle,
   className,
-  as,
   ...props
 }) => {
   return (
     <Form.Group controlId={name} className={className}>
-      <Form.Label
-        className="mb-1"
-        style={{ fontSize: "0.875rem", fontWeight: "bold" }}
-      >
+      <Form.Label className="mb-1" style={{ fontSize: "0.875rem", fontWeight: "bold" }}>
         {label}
-      </Form.Label>
-      <Form.Control
-        as={as}
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        isInvalid={isInvalid}
-        style={{ height: "38px" }}
-        {...props}
-      />
-      <Form.Control.Feedback
-        type="invalid"
-        style={{ fontSize: "0.75rem", color: "#dc3545" }}
-      >
-        {feedback}
-      </Form.Control.Feedback>
+      </Form.Label><br/>
+      <InputGroup>
+        <Form.Control
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          isInvalid={Boolean(isInvalid)}
+          isValid={Boolean(value) && !isInvalid} 
+          style={{ height: "38px" }}
+          {...props}
+        /><br/>
+        
+        {showPasswordToggle && (
+          <Button
+            variant="outline-secondary"
+            onClick={onPasswordToggle}
+            className="input-group-text"
+            style={{ borderTopLeftRadius: "0", borderBottomLeftRadius: "0" }}
+          >
+            <i className={`bi ${type === "password" ? "bi-eye" : "bi-eye-slash"}`}></i>
+          </Button>
+        )}
+
+       
+
+        <Form.Control.Feedback type="invalid">
+          {feedback}
+        </Form.Control.Feedback>
+      </InputGroup>
     </Form.Group>
   );
 };
 
 export default InputField;
+
+

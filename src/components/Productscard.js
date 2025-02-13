@@ -202,7 +202,7 @@ function ProductsCard() {
                   <span className="badge text-bg-warning w-25 mb-3">{product.stock}</span> Left in stock
                 </h6>
                 <div className="d-flex justify-content-between">
-                  <Button variant="success" onClick={() => handleAddToCart(product)}>
+                  <Button variant="success" onClick={() => handleAddToCart(product)} disabled={product.stock === 0}>
                     <FaShoppingCart />
                   </Button>
                   <Button variant="outline-danger" onClick={() => handleAddToWishlist(product)}>
@@ -228,42 +228,6 @@ function ProductsCard() {
         )
       }
 
-      <Row className="g-4">
-        {currentProducts.map((product) => (
-          <Col key={product.id} xs={12} sm={6} md={4} lg={3}>
-            <Card className="h-100 shadow-sm">
-              <Card.Img
-                variant="top"
-                src={product.image}
-                alt={product.title}
-                style={{ height: "400px", objectFit: "contain" }}
-              />
-              <Card.Body className="d-flex flex-column">
-                <Card.Title className="text-truncate">{product.title}</Card.Title>
-                <Card.Text className="text-muted small text-truncate">
-                  {product.description}
-                </Card.Text>
-                <h5 className="text-primary">${product.price}</h5>
-                <div className="d-flex justify-content-between">
-                  <Button variant="success" onClick={() => handleAddToCart(product)}>
-                    <FaShoppingCart />
-                  </Button>
-                  <Button variant="outline-danger" onClick={() => handleAddToWishlist(product)}>
-                    <FaHeart />
-                  </Button>
-                </div>
-                <Link to={`/products/${product.id}`}>
-                  <Button variant="primary" className="mt-2">
-                    View Details
-                  </Button>
-                </Link>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row >
-
-      {/* Pagination */}
       <Pagination>
         <Pagination.Prev onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
           Previous
@@ -297,9 +261,6 @@ function ProductsCard() {
         </Modal.Footer>
       </Modal>
 
-
-
-      {/*  Notification */}
       <ToastContainer position="bottom-end" className="p-3" style={{ zIndex: 9999 }}>
         <Toast show={showToast} onClose={() => setShowToast(false)} bg={toastVariant} delay={2000} autohide>
           <Toast.Header>

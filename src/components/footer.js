@@ -17,7 +17,6 @@ const Footer = () => {
   const containerStyle = {
     display: "flex",
     flexDirection: "column",
-    minHeight: "60vh", 
   };
 
   const contentStyle = {

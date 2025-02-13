@@ -27,8 +27,8 @@ function App() {
 
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/admin" component={AdminPanel} exact />
-          <Route path="/admin/products" component={ProductsTable} exact />
+          <Route path="/admin" component={ProductsTable} exact />
+          {/* <Route path="/admin/products" component={ProductsTable} exact /> */}
           <Route exact path="/products" component={Products} />
           <Route exact path="/products/create" component={ProductCreate} />
           <Route path="/products/update/:id" component={ProductUpdate} />

@@ -269,7 +269,7 @@ function ProductsCard() {
         )
       }
 
-      <Pagination>
+      <Pagination className="justify-content-center py-4">
         <Pagination.Prev onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
 
           Previous

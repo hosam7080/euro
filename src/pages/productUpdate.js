@@ -42,8 +42,14 @@ function ProductUpdate() {
 			if (name === "title" && value.length < 3) return "This field can't be less than 3 characters";
 			if (name === "description" && value.length === 0) return "This field can't be empty";
 			if (name === "category" && value.length < 3) return "This field can't be less than 3 characters";
-			if (name === "price" && value.length === 0) return "This field can't be empty";
-			if (name === "stock" && value.length === 0) return "This field can't be empty";
+			if (name === "price") {
+				if (value.length === 0) return "This field can't be empty";
+				if (parseFloat(value) <= 0) return "Value can't be 0 or less";
+			}
+			if (name === "stock") {
+				if (value.length === 0) return "This field can't be empty";
+				if (parseInt(value, 10) <= 0) return "Value can't be 0 or less";
+			}
 			if (name === "image" && value.length === 0) return "This field can't be empty";
 			return null;
 		}
@@ -57,7 +63,6 @@ function ProductUpdate() {
 			...prevErrors,
 			[`${name}Error`]: validateField(name, value)
 		}));
-
 	}
 
 	function updateProduct(event) {
@@ -94,81 +99,83 @@ function ProductUpdate() {
 		productData.image.length > 0;
 
 	return (
-		<div className="row">
-			<div className="col-6 offset-2">
-				<form onSubmit={updateProduct}>
-					<div className="card mb-4">
-						<h5 className="card-header">Update Product</h5>
-						<div className="card-body">
-							<TextInput
-								handleForm={handleForm}
-								label={"Title"}
-								name={"title"}
-								error={errors.titleError}
-								value={productData.title}
-								type={"text"}
-								placeholder={"Green Avocado"}
-							/>
+		<div className="container p-5">
+			<div className="row">
+				<div className="col-6 offset-2">
+					<form onSubmit={updateProduct}>
+						<div className="card mb-4">
+							<h5 className="card-header">Update Product</h5>
+							<div className="card-body">
+								<TextInput
+									handleForm={handleForm}
+									label={"Title"}
+									name={"title"}
+									error={errors.titleError}
+									value={productData.title}
+									type={"text"}
+									placeholder={"Green Avocado"}
+								/>
 
-							<TextInput
-								handleForm={handleForm}
-								label={"Description"}
-								name={"description"}
-								error={errors.descError}
-								value={productData.description}
-								type={"textArea"}
-								placeholder={""}
-							/>
+								<TextInput
+									handleForm={handleForm}
+									label={"Description"}
+									name={"description"}
+									error={errors.descError}
+									value={productData.description}
+									type={"textArea"}
+									placeholder={""}
+								/>
 
-							<TextInput
-								handleForm={handleForm}
-								label={"Cateogry"}
-								name={"category"}
-								error={errors.categoryError}
-								value={productData.category}
-								type={"text"}
-								placeholder={"Fruits"}
-							/>
+								<TextInput
+									handleForm={handleForm}
+									label={"Cateogry"}
+									name={"category"}
+									error={errors.categoryError}
+									value={productData.category}
+									type={"text"}
+									placeholder={"Fruits"}
+								/>
 
-							<TextInput
-								handleForm={handleForm}
-								label={"Price"}
-								name={"price"}
-								error={errors.price}
-								value={productData.price}
-								type={"number"}
-								placeholder={"22.5"}
-							/>
+								<TextInput
+									handleForm={handleForm}
+									label={"Price"}
+									name={"price"}
+									error={errors.priceError}
+									value={productData.price}
+									type={"number"}
+									placeholder={"22.5"}
+								/>
 
-							<TextInput
-								handleForm={handleForm}
-								label={"Stock"}
-								name={"stock"}
-								error={errors.stockError}
-								value={productData.stock}
-								type={"number"}
-								placeholder={"34"}
-							/>
+								<TextInput
+									handleForm={handleForm}
+									label={"Stock"}
+									name={"stock"}
+									error={errors.stockError}
+									value={productData.stock}
+									type={"number"}
+									placeholder={"34"}
+								/>
 
-							<TextInput
-								handleForm={handleForm}
-								label={"Image Url"}
-								name={"image"}
-								error={errors.imageError}
-								value={productData.image}
-								type={"text"}
-							/>
+								<TextInput
+									handleForm={handleForm}
+									label={"Image Url"}
+									name={"image"}
+									error={errors.imageError}
+									value={productData.image}
+									type={"text"}
+								/>
 
+							</div>
+							<button
+								type="submit"
+								className="btn btn-success"
+								disabled={!formValid} 
+							>
+								Save
+							</button>
 						</div>
-						<button
-							type="submit"
-							className="btn btn-success"
-							disabled={!formValid} 
-						>
-							Save
-						</button>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
 		</div>
 	);

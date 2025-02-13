@@ -41,8 +41,14 @@ function ProductCreate() {
 			if (name === "title" && value.length < 3) return "This field can't be less than 3 characters";
 			if (name === "description" && value.length === 0) return "This field can't be empty";
 			if (name === "category" && value.length < 3) return "This field can't be less than 3 characters";
-			if (name === "price" && value.length === 0) return "This field can't be empty";
-			if (name === "stock" && value.length === 0) return "This field can't be empty";
+			if (name === "price") {
+				if (value.length === 0) return "This field can't be empty";
+				if (parseFloat(value) <= 0) return "Value can't be 0 or less";
+			}
+			if (name === "stock") {
+				if (value.length === 0) return "This field can't be empty";
+				if (parseInt(value, 10) <= 0) return "Value can't be 0 or less";
+			}
 			if (name === "image" && value.length === 0) return "This field can't be empty";
 			return null;
 		}
@@ -135,7 +141,7 @@ function ProductCreate() {
 									handleForm={handleForm}
 									label={"Price"}
 									name={"price"}
-									error={errors.price}
+									error={errors.priceError}
 									value={productData.price}
 									type={"number"}
 									placeholder={"22.5"}

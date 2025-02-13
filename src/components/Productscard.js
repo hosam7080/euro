@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Card, Button, Alert, Row, Col, Container, Pagination, Toast, ToastContainer, Modal, Form } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Alert,
+  Row,
+  Col,
+  Container,
+  Pagination,
+  Toast,
+  ToastContainer,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, ADD_TO_WISHLIST } from "../actions/actions";
@@ -22,11 +34,14 @@ function ProductsCard() {
   const dispatch = useDispatch();
   const { searchTerm } = useSearch();
 
-  const userKey = username || "guest"; 
+  const userKey = username || "guest";
   const wishlist = useSelector((state) => state.wishlist[userKey] || []);
   const cart = useSelector((state) => state.cart[username] || []);
 
-  const categories = ["All", ...new Set(products.map((product) => product.category))];
+  const categories = [
+    "All",
+    ...new Set(products.map((product) => product.category)),
+  ];
 
   const priceRanges = [
     { label: "Under $25", min: 0, max: 25 },
@@ -38,13 +53,15 @@ function ProductsCard() {
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
       selectedCategory === "All" || product.category === selectedCategory;
-    // 
-    const matchesSearchTerm =
-      product.title.toLowerCase().startsWith(searchTerm.toLowerCase());
+    //
+    const matchesSearchTerm = product.title
+      .toLowerCase()
+      .startsWith(searchTerm.toLowerCase());
     //
     const matchesPriceRange =
       selectedPriceRange === null ||
-      (product.price >= selectedPriceRange.min && product.price <= selectedPriceRange.max);
+      (product.price >= selectedPriceRange.min &&
+        product.price <= selectedPriceRange.max);
 
     return matchesCategory && matchesSearchTerm && matchesPriceRange;
   });
@@ -68,7 +85,6 @@ function ProductsCard() {
     }
   }, []);
 
-
   const showToastNotification = (message, variant = "success") => {
     setToastMessage(message);
     setToastVariant(variant);
@@ -88,7 +104,10 @@ function ProductsCard() {
     const productExists = cart.some((item) => item.id === product.id);
 
     if (productExists) {
-      showToastNotification(`${product.title} is already in your cart!`, "danger");
+      showToastNotification(
+        `${product.title} is already in your cart!`,
+        "danger"
+      );
     } else {
       dispatch(addToCart(product));
       showToastNotification(`${product.title} added to cart!`, "success");
@@ -96,12 +115,16 @@ function ProductsCard() {
   };
 
   const handleAddToWishlist = (product) => {
-    const username = JSON.parse(localStorage.getItem("loginSession"))?.username || "guest";
+    const username =
+      JSON.parse(localStorage.getItem("loginSession"))?.username || "guest";
 
     const productExists = wishlist.some((item) => item.id === product.id);
 
     if (productExists) {
-      showToastNotification(`${product.title} is already in your wishlist!`, "warning");
+      showToastNotification(
+        `${product.title} is already in your wishlist!`,
+        "warning"
+      );
       return;
     }
 
@@ -115,9 +138,13 @@ function ProductsCard() {
       },
     });
 
-    const existingWishlist = JSON.parse(localStorage.getItem(`wishlist_${username}`)) || [];
+    const existingWishlist =
+      JSON.parse(localStorage.getItem(`wishlist_${username}`)) || [];
     const updatedWishlist = [...existingWishlist, product];
-    localStorage.setItem(`wishlist_${username}`, JSON.stringify(updatedWishlist));
+    localStorage.setItem(
+      `wishlist_${username}`,
+      JSON.stringify(updatedWishlist)
+    );
 
     showToastNotification(`${product.title} added to wishlist!`, "success");
   };
@@ -130,7 +157,10 @@ function ProductsCard() {
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -145,7 +175,9 @@ function ProductsCard() {
         {categories.map((category, index) => (
           <Button
             key={index}
-            variant={selectedCategory === category ? "success" : "outline-success"}
+            variant={
+              selectedCategory === category ? "success" : "outline-success"
+            }
             className="me-4 mb-4 fs-5"
             onClick={() => {
               setSelectedCategory(category);
@@ -193,19 +225,28 @@ function ProductsCard() {
                 style={{ height: "400px", objectFit: "contain" }}
               />
               <Card.Body className="d-flex flex-column">
-                <Card.Title className="text-truncate">{product.title}</Card.Title>
+                <Card.Title className="text-truncate">
+                  {product.title}
+                </Card.Title>
                 <Card.Text className="text-muted small text-truncate">
                   {product.description}
                 </Card.Text>
                 <h5 className="text-primary">${product.price}</h5>
                 <h6>
-                  <span className="badge text-bg-warning w-25 mb-3">{product.stock}</span> Left in stock
+                  <span className="badge text-bg-warning w-25 mb-3">
+                    {product.stock}
+                  </span>{" "}
+                  Left in stock
                 </h6>
                 <div className="d-flex justify-content-between">
                   <Button variant="success" onClick={() => handleAddToCart(product)} disabled={product.stock === 0}>
+
                     <FaShoppingCart />
                   </Button>
-                  <Button variant="outline-danger" onClick={() => handleAddToWishlist(product)}>
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => handleAddToWishlist(product)}
+                  >
                     <FaHeart />
                   </Button>
                 </div>
@@ -230,6 +271,7 @@ function ProductsCard() {
 
       <Pagination>
         <Pagination.Prev onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+
           Previous
         </Pagination.Prev>
         {Array.from({ length: totalPages }, (_, index) => (
@@ -241,10 +283,13 @@ function ProductsCard() {
             {index + 1}
           </Pagination.Item>
         ))}
-        <Pagination.Next onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>
+        <Pagination.Next
+          onClick={() => paginate(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
           Next
         </Pagination.Next>
-      </Pagination >
+      </Pagination>
 
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
@@ -260,19 +305,19 @@ function ProductsCard() {
           </Link>
         </Modal.Footer>
       </Modal>
-
       <ToastContainer position="bottom-end" className="p-3" style={{ zIndex: 9999 }}>
         <Toast show={showToast} onClose={() => setShowToast(false)} bg={toastVariant} delay={2000} autohide>
+
           <Toast.Header>
-            <strong className="me-auto">{toastVariant === "success" ? "Success" : "Warning"}</strong>
+            <strong className="me-auto">
+              {toastVariant === "success" ? "Success" : "Warning"}
+            </strong>
           </Toast.Header>
           <Toast.Body className="text-white">{toastMessage}</Toast.Body>
         </Toast>
       </ToastContainer>
-
-    </Container >
+    </Container>
   );
-
 }
 
 export default ProductsCard;
